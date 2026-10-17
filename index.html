@@ -1,0 +1,267 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Agente Ventas Estrada</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: app de una columna para celular, barra inferior con 4 secciones, hoja deslizable para editar */
+:root{
+  --bg:#f6f2ea; --surface:#fffdf8; --surface2:#ece5d6; --fg:#241f14; --muted:#6d6450;
+  --line:#ddd3bd; --gold:#9a6b00; --gold-ink:#fff8e6; --ok:#1f7a45; --ok-ink:#ffffff; --bad:#b3341f;
+  --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#16130d; --surface:#201c13; --surface2:#2b2618; --fg:#f4ecd8; --muted:#a89d82;
+  --line:#3a3322; --gold:#e3b341; --gold-ink:#1a1405; --ok:#4cc27f; --ok-ink:#07230f; --bad:#ff7a63; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#16130d; --surface:#201c13; --surface2:#2b2618; --fg:#f4ecd8; --muted:#a89d82;
+  --line:#3a3322; --gold:#e3b341; --gold-ink:#1a1405; --ok:#4cc27f; --ok-ink:#07230f; --bad:#ff7a63; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.45;padding-inline:16px;padding-block:0 96px}
+.wrap{max-width:640px;margin-inline:auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.brand{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:700}
+h1{font-family:var(--font-display);font-size:26px;line-height:1.1;margin:2px 0 0;font-weight:800;text-wrap:balance}
+h2{font-family:var(--font-display);font-size:20px;margin:0 0 4px;font-weight:800}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{min-width:0}
+.between{justify-content:space-between}
+label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+textarea{min-height:120px;resize:vertical}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--surface2);color:var(--fg);min-height:44px;padding:0 14px;font-weight:600}
+.gold{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.wa{background:var(--ok);color:var(--ok-ink);border-color:var(--ok)}
+.ghost{background:transparent}
+.small{min-height:36px;padding:0 10px;font-size:13px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;min-height:44px;padding:0 14px;font-weight:600}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+.chip{flex:none;min-height:34px;font-size:12px;border-radius:99px;padding:0 12px}
+.chip[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.pill{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.pill.s3,.pill.s4,.pill.s5{background:var(--gold);color:var(--gold-ink)}
+.p-name{font-weight:700;overflow-wrap:anywhere}
+.p-meta{color:var(--muted);font-size:12px}
+.p-note{color:var(--muted);font-size:13px;margin-top:6px;overflow-wrap:anywhere}
+.big{font-family:var(--font-display);font-weight:800;font-size:52px;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.bar{height:12px;border-radius:99px;background:var(--surface2);overflow:hidden;margin-block:12px 6px}
+.bar>i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .3s}
+.pk{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px;text-align:left;min-height:0;display:block;width:100%}
+.pk[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.pk b{font-family:var(--font-display);font-size:30px;display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ul.list{list-style:none;margin:0;padding:0}
+ul.list li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+ul.list li:first-child{border-top:0}
+nav{position:fixed;inset-inline:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:8}
+nav .in{max-width:640px;margin-inline:auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{border:0;background:transparent;border-radius:0;min-height:56px;font-size:12px;color:var(--muted);font-weight:700}
+nav button[aria-current="page"]{color:var(--gold)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet>.card{width:100%;max-width:640px;border-radius:18px 18px 0 0;max-height:92%;overflow:auto;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+.note{font-size:12px;color:var(--muted)}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:16px;text-align:center;color:var(--muted);font-size:13px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:99px;font-size:13px;font-weight:600;z-index:30}
+@media (prefers-reduced-motion:reduce){.bar>i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">ESSTRADA Co.</div>
+    <h1>Agente Ventas Estrada</h1>
+  </header>
+  <main id="view"></main>
+</div>
+
+<nav><div class="in" id="nav"></div></nav>
+<div id="sheet" class="sheet" hidden></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+(function(){
+var KEY="agente-ventas-estrada-v1";
+var ESTADOS=[["nuevo","Nuevo"],["contactado","Contactado"],["interesado","Interesado"],["adelanto","Adelanto cobrado"],["entregado","Entregado"],["mensual","Cliente mensual"]];
+var RUBROS=["Farmacia","Ferretería","Hostal","Restaurante","Taller","Repuestos de moto","Consultorio","Otro"];
+var ZONAS=["Pichari","Llochegua","Santa Rosa","Otra"];
+var BEN={
+ "Farmacia":"que sus clientes vean su horario y servicios, y le escriban a consultar antes de ir",
+ "Ferretería":"que le pidan cotizaciones de materiales y consulten stock directo por WhatsApp",
+ "Hostal":"que los viajeros vean sus cuartos y le consulten disponibilidad por WhatsApp",
+ "Restaurante":"que muestren su carta y le hagan pedidos por WhatsApp",
+ "Taller":"que le pidan citas y consulten sus servicios sin llamar",
+ "Repuestos de moto":"que le consulten por repuestos según el modelo de moto y reserven por WhatsApp",
+ "Consultorio":"que sus pacientes vean sus servicios y reserven cita por WhatsApp",
+ "Otro":"que sus clientes lo encuentren en Google y le escriban directo por WhatsApp"
+};
+var PAQ={express:{n:"Express",p:150,d:"Landing page + botón de WhatsApp"},pro:{n:"Pro",p:250,d:"Landing page + chatbot de preguntas frecuentes"}};
+var META=100;
+
+var S=load();
+var tab="prospectos", filtro="todos", paq="express", mant=0, delArm=null;
+var msg={pid:"",tipo:"primer",nombre:"",rubro:"Farmacia",zona:"Pichari",wa:"",texto:""};
+var cot={nombre:"",wa:""};
+
+function load(){
+  try{var r=localStorage.getItem(KEY); if(r){var o=JSON.parse(r); if(o&&o.prospects)return o;}}catch(e){}
+  return {prospects:[
+    {id:"e1",nombre:"Ejemplo: Farmacia Salud Pichari",rubro:"Farmacia",zona:"Pichari",wa:"987654321",notas:"Dato de ejemplo. Bórrelo cuando registre su primer negocio real.",estado:"contactado"},
+    {id:"e2",nombre:"Ejemplo: Repuestos Moto Llochegua",rubro:"Repuestos de moto",zona:"Llochegua",wa:"",notas:"Dato de ejemplo.",estado:"nuevo"},
+    {id:"e3",nombre:"Ejemplo: Hostal Río Apurímac",rubro:"Hostal",zona:"Santa Rosa",wa:"",notas:"Dato de ejemplo.",estado:"interesado"}
+  ],incomes:[]};
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function uid(){return "p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function hoy(){return new Intl.DateTimeFormat("en-CA",{timeZone:"America/Lima"}).format(new Date());}
+function waLink(n,t){var d=String(n||"").replace(/\D/g,""); if(d.length===9)d="51"+d; return "https://wa.me/"+d+"?text="+encodeURIComponent(t||"");}
+function toast(t){var el=document.getElementById("toast"); el.textContent=t; el.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(function(){el.hidden=true;},1800);}
+function copy(t,ta){
+  function fb(){ if(ta){ta.focus();ta.select();} toast("Seleccionado: copie con el menú del teléfono"); }
+  try{ navigator.clipboard.writeText(t).then(function(){toast("Copiado");},fb); }catch(e){fb();}
+}
+function opts(arr,sel){return arr.map(function(x){var v=Array.isArray(x)?x[0]:x,l=Array.isArray(x)?x[1]:x;return '<option value="'+esc(v)+'"'+(v===sel?" selected":"")+'>'+esc(l)+'</option>';}).join("");}
+
+/* ---------- Mensajes ---------- */
+function plantilla(tipo,n,z,r){
+  var b=BEN[r]||BEN["Otro"], nom=n||"su negocio", t=z?" en "+z:"";
+  var T={
+   primer:"Buen día 👋 le escribo de ESSTRADA Co. Hacemos páginas web con botón de WhatsApp para negocios"+t+". Para "+nom+" sería para "+b+".\nLa tenemos lista en 24 horas por S/150, con adelanto de solo S/75 por Yape.\n¿Le muestro un ejemplo hoy?",
+   seg24:"Hola, buen día. Le escribo por la página con WhatsApp para "+nom+". Con ella "+b+".\nSi quiere, le muestro un ejemplo corto y usted decide. ¿Le parece?",
+   seg72:"Hola, último mensaje de mi parte para no incomodar 🙏. La página para "+nom+" sigue en S/150, con adelanto de S/75 por Yape y lista en 24 horas.\nSi más adelante le interesa, aquí estoy. ¿Prefiere que le escriba otro día?",
+   caro:"Lo entiendo. Piense que con un solo cliente nuevo que le escriba por la página, ya recupera lo que paga. Y para empezar solo son S/75 de adelanto por Yape, el resto al entregar.\n¿Empezamos con el paquete Express?",
+   pensar:"Claro, tómese su tiempo. Para que decida tranquilo, mañana le muestro cómo se vería la página de "+nom+" y le resuelvo cualquier duda.\n¿A qué hora le va bien?",
+   facebook:"Muy bien, el Facebook ayuda. La página no lo reemplaza, lo complementa: aparece cuando buscan en Google, se ve profesional y lleva directo al WhatsApp de "+nom+".\n¿Le muestro un ejemplo?"
+  };
+  return T[tipo]||T.primer;
+}
+var TIPOS=[["primer","Primer mensaje"],["seg24","Seguimiento 24 h"],["seg72","Seguimiento 72 h"],["caro","“Está caro”"],["pensar","“Lo voy a pensar”"],["facebook","“Ya tengo Facebook”"]];
+
+/* ---------- Cotización ---------- */
+function cotizacion(){
+  var p=PAQ[paq], ad=Math.round(p.p/2), nom=cot.nombre?" "+cot.nombre:"";
+  var l=["Hola"+nom+" 👋, esta es su cotización de ESSTRADA Co.","","📦 Paquete "+p.n+": "+p.d,"💰 Total: S/"+p.p,"✅ Adelanto 50% por Yape: S/"+ad,"📲 Saldo al entregar: S/"+(p.p-ad)];
+  if(mant)l.push("🔧 Mantenimiento mensual: S/"+mant);
+  l.push("⏱️ Entrega en 24 horas desde el adelanto.","","¿Le separo el turno de hoy?");
+  return l.join("\n");
+}
+
+/* ---------- Vistas ---------- */
+function vProspectos(){
+  var cnt={}; ESTADOS.forEach(function(e){cnt[e[0]]=S.prospects.filter(function(p){return p.estado===e[0];}).length;});
+  var lista=S.prospects.filter(function(p){return filtro==="todos"||p.estado===filtro;});
+  var h='<div class="row between"><div><h2>Prospectos</h2><p class="sub">'+S.prospects.length+' negocios registrados</p></div><button class="gold" data-a="nuevo">+ Nuevo</button></div>';
+  h+='<div class="chips"><button class="chip" aria-pressed="'+(filtro==="todos")+'" data-f="todos">Todos '+S.prospects.length+'</button>'+ESTADOS.map(function(e){return '<button class="chip" aria-pressed="'+(filtro===e[0])+'" data-f="'+e[0]+'">'+e[1]+' '+cnt[e[0]]+'</button>';}).join("")+'</div>';
+  if(!lista.length)h+='<div class="empty">No hay negocios en esta lista. Toque “+ Nuevo” para registrar el primero.</div>';
+  h+='<div class="stack">'+lista.map(function(p){
+    var i=ESTADOS.findIndex(function(e){return e[0]===p.estado;});
+    return '<div class="card"><div class="row between" style="align-items:flex-start"><div style="min-width:0"><div class="p-name">'+esc(p.nombre)+'</div><div class="p-meta">'+esc(p.rubro)+' · '+esc(p.zona)+(p.wa?' · '+esc(p.wa):'')+'</div></div><span class="pill s'+i+'">'+esc(ESTADOS[i][1])+'</span></div>'+
+    (p.notas?'<div class="p-note">'+esc(p.notas)+'</div>':'')+
+    '<div class="row" style="margin-top:10px"><select data-mv="'+p.id+'" aria-label="Cambiar estado" style="flex:1 1 150px">'+opts(ESTADOS,p.estado)+'</select>'+
+    '<button class="small" data-ia="'+p.id+'">Mensaje</button><button class="small" data-ed="'+p.id+'">Editar</button>'+
+    (p.wa?'<a class="btn small wa" style="min-height:36px" target="_blank" rel="noreferrer" href="'+esc(waLink(p.wa,"Hola, le escribo de ESSTRADA Co. "))+'">WhatsApp</a>':'')+
+    '<button class="small ghost" data-del="'+p.id+'">'+(delArm===p.id?"¿Seguro? Borrar":"Borrar")+'</button></div></div>';
+  }).join("")+'</div>';
+  return h;
+}
+function vMensajes(){
+  var h='<h2>Mensajes de WhatsApp</h2><p class="sub">Textos cercanos según el rubro, listos para enviar.</p><div class="card stack">';
+  h+='<div><label for="m-pid">Prospecto (opcional)</label><select id="m-pid"><option value="">Escribir datos a mano</option>'+S.prospects.map(function(p){return '<option value="'+p.id+'"'+(p.id===msg.pid?" selected":"")+'>'+esc(p.nombre)+'</option>';}).join("")+'</select></div>';
+  h+='<div class="grid2"><div><label for="m-n">Negocio</label><input id="m-n" value="'+esc(msg.nombre)+'"></div><div><label for="m-w">WhatsApp</label><input id="m-w" inputmode="tel" value="'+esc(msg.wa)+'" placeholder="987654321"></div>';
+  h+='<div><label for="m-r">Rubro</label><select id="m-r">'+opts(RUBROS,msg.rubro)+'</select></div><div><label for="m-z">Zona</label><select id="m-z">'+opts(ZONAS,msg.zona)+'</select></div></div>';
+  h+='<div class="grid2">'+TIPOS.map(function(t){return '<button class="chip" style="border-radius:10px;min-height:40px" aria-pressed="'+(msg.tipo===t[0])+'" data-t="'+t[0]+'">'+t[1]+'</button>';}).join("")+'</div>';
+  h+='<div><label for="m-t">Mensaje (puede editarlo)</label><textarea id="m-t">'+esc(msg.texto)+'</textarea></div>';
+  h+='<div class="row"><button class="gold" data-a="gen">Generar mensaje</button><button data-a="copy-m">Copiar</button><a class="btn wa" id="m-go" target="_blank" rel="noreferrer" href="'+esc(waLink(msg.wa,msg.texto))+'">Abrir en WhatsApp</a></div></div>';
+  return h;
+}
+function vCotizar(){
+  var h='<h2>Cotizador</h2><p class="sub">Elija el paquete y envíe la cotización por WhatsApp.</p><div class="grid2">';
+  Object.keys(PAQ).forEach(function(k){var p=PAQ[k];h+='<button class="pk" aria-pressed="'+(paq===k)+'" data-p="'+k+'"><span class="note" style="text-transform:uppercase;letter-spacing:.15em;color:var(--gold);font-weight:700">'+p.n+'</span><b>S/'+p.p+'</b><span class="note">'+p.d+'</span></button>';});
+  h+='</div><div class="card stack" style="margin-top:10px"><div><label>Mantenimiento mensual (opcional)</label><div class="row">'+[0,30,40,50].map(function(v){return '<button class="chip" style="flex:1" aria-pressed="'+(mant===v)+'" data-m="'+v+'">'+(v?"S/"+v:"Sin")+'</button>';}).join("")+'</div></div>';
+  h+='<div class="grid2"><div><label for="c-n">Negocio</label><input id="c-n" value="'+esc(cot.nombre)+'"></div><div><label for="c-w">WhatsApp</label><input id="c-w" inputmode="tel" value="'+esc(cot.wa)+'"></div></div>';
+  h+='<div><label for="c-t">Cotización</label><textarea id="c-t" readonly>'+esc(cotizacion())+'</textarea></div><div class="row"><button data-a="copy-c">Copiar</button><a class="btn wa" id="c-go" target="_blank" rel="noreferrer" href="'+esc(waLink(cot.wa,cotizacion()))+'">Abrir en WhatsApp</a></div></div>';
+  return h;
+}
+function vIngresos(){
+  var t=hoy(), mes=t.slice(0,7);
+  var hoyL=S.incomes.filter(function(i){return i.fecha===t;}), tot=hoyL.reduce(function(s,i){return s+i.monto;},0);
+  var totMes=S.incomes.filter(function(i){return i.fecha.slice(0,7)===mes;}).reduce(function(s,i){return s+i.monto;},0);
+  var pct=Math.min(100,tot/META*100);
+  var h='<h2>Ingresos</h2><p class="sub">Meta diaria: S/'+META+'</p><div class="card"><div class="note" style="text-transform:uppercase;letter-spacing:.15em">Hoy</div><div class="big">S/'+tot.toFixed(0)+'</div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="'+META+'" aria-valuenow="'+Math.min(tot,META)+'"><i style="width:'+pct+'%"></i></div><div class="note">'+(tot>=META?"Meta del día cumplida":"Faltan S/"+(META-tot).toFixed(0)+" para la meta")+'</div></div>';
+  h+='<div class="card row between" style="margin-top:10px"><span class="note">Total del mes</span><b style="font-family:var(--font-display);font-size:22px;font-variant-numeric:tabular-nums">S/'+totMes.toFixed(2)+'</b></div>';
+  h+='<div class="card stack" style="margin-top:10px"><div class="row" style="flex-wrap:nowrap"><input id="i-m" inputmode="decimal" placeholder="S/" style="width:90px;flex:none" aria-label="Monto"><input id="i-c" placeholder="Concepto (ej. adelanto farmacia)" aria-label="Concepto"><button class="gold" data-a="addi" style="flex:none">+</button></div>';
+  h+=hoyL.length?'<ul class="list">'+hoyL.map(function(i){return '<li><span>'+esc(i.concepto||"Ingreso")+'</span><span><b>S/'+i.monto.toFixed(2)+'</b> <button class="small ghost" data-di="'+i.id+'" aria-label="Borrar">✕</button></span></li>';}).join("")+'</ul>':'<div class="empty">Sin ingresos hoy todavía. Registre aquí cada adelanto que reciba por Yape.</div>';
+  return h+'</div>';
+}
+
+function render(){
+  var map={prospectos:vProspectos,mensajes:vMensajes,cotizar:vCotizar,ingresos:vIngresos};
+  document.getElementById("view").innerHTML=map[tab]();
+  document.getElementById("nav").innerHTML=[["prospectos","Prospectos"],["mensajes","Mensajes"],["cotizar","Cotizar"],["ingresos","Ingresos"]].map(function(x){return '<button data-tab="'+x[0]+'"'+(tab===x[0]?' aria-current="page"':'')+'>'+x[1]+'</button>';}).join("");
+}
+
+/* ---------- Hoja de edición ---------- */
+function openSheet(p){
+  p=p||{nombre:"",rubro:"Farmacia",zona:"Pichari",wa:"",notas:"",estado:"nuevo"};
+  var el=document.getElementById("sheet");
+  el.innerHTML='<div class="card stack" role="dialog" aria-label="Negocio"><h2>'+(p.id?"Editar negocio":"Nuevo negocio")+'</h2>'+
+  '<div><label for="s-n">Nombre del negocio</label><input id="s-n" value="'+esc(p.nombre)+'"></div>'+
+  '<div class="grid2"><div><label for="s-r">Rubro</label><select id="s-r">'+opts(RUBROS,p.rubro)+'</select></div><div><label for="s-z">Zona</label><select id="s-z">'+opts(ZONAS,p.zona)+'</select></div></div>'+
+  '<div><label for="s-w">WhatsApp</label><input id="s-w" inputmode="tel" value="'+esc(p.wa)+'" placeholder="987654321"></div>'+
+  '<div><label for="s-o">Notas</label><textarea id="s-o" style="min-height:80px">'+esc(p.notas)+'</textarea></div>'+
+  '<div class="row"><button class="gold" data-a="guardar" data-id="'+(p.id||"")+'" style="flex:1">Guardar</button><button data-a="cerrar">Cancelar</button></div></div>';
+  el.hidden=false; setTimeout(function(){var i=document.getElementById("s-n"); if(i)i.focus();},50);
+}
+function closeSheet(){document.getElementById("sheet").hidden=true;}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(!b)return;
+  var d=b.dataset;
+  if(d.tab){tab=d.tab;delArm=null;render();window.scrollTo(0,0);return;}
+  if(d.f){filtro=d.f;render();return;}
+  if(d.t){msg.tipo=d.t;msg.texto=plantilla(msg.tipo,msg.nombre,msg.zona,msg.rubro);render();return;}
+  if(d.p){paq=d.p;render();return;}
+  if(d.m!==undefined){mant=Number(d.m);render();return;}
+  if(d.ia){msg.pid=d.ia;fillMsg();tab="mensajes";render();window.scrollTo(0,0);return;}
+  if(d.ed){openSheet(S.prospects.find(function(p){return p.id===d.ed;}));return;}
+  if(d.del){if(delArm===d.del){S.prospects=S.prospects.filter(function(p){return p.id!==d.del;});delArm=null;save();toast("Negocio borrado");}else delArm=d.del;render();return;}
+  if(d.di){S.incomes=S.incomes.filter(function(i){return i.id!==d.di;});save();render();return;}
+  switch(d.a){
+   case"nuevo":openSheet();break;
+   case"cerrar":closeSheet();break;
+   case"guardar":{
+     var n=document.getElementById("s-n").value.trim(); if(!n){toast("Escriba el nombre del negocio");return;}
+     var o={nombre:n,rubro:document.getElementById("s-r").value,zona:document.getElementById("s-z").value,wa:document.getElementById("s-w").value.trim(),notas:document.getElementById("s-o").value.trim()};
+     if(d.id){var p=S.prospects.find(function(x){return x.id===d.id;}); if(p)Object.assign(p,o);} else {o.id=uid();o.estado="nuevo";S.prospects.unshift(o);}
+     save();closeSheet();render();toast("Guardado");break;}
+   case"gen":syncMsg();msg.texto=plantilla(msg.tipo,msg.nombre,msg.zona,msg.rubro);render();break;
+   case"copy-m":syncMsg();copy(msg.texto,document.getElementById("m-t"));break;
+   case"copy-c":copy(cotizacion(),document.getElementById("c-t"));break;
+   case"addi":{var m=parseFloat(String(document.getElementById("i-m").value).replace(",","."));if(!(m>0)){toast("Escriba un monto mayor a 0");return;}
+     S.incomes.unshift({id:uid(),monto:m,concepto:document.getElementById("i-c").value.trim(),fecha:hoy()});save();render();toast("Ingreso registrado");break;}
+  }
+});
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.dataset.mv){var p=S.prospects.find(function(x){return x.id===t.dataset.mv;}); if(p){p.estado=t.value;save();render();}return;}
+  if(t.id==="m-pid"){msg.pid=t.value;fillMsg();render();return;}
+  if(t.id==="m-r"||t.id==="m-z"){syncMsg();render();}
+});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(t.id==="m-n"||t.id==="m-w"||t.id==="m-t"){syncMsg();var a=document.getElementById("m-go");if(a)a.href=waLink(msg.wa,msg.texto);}
+  if(t.id==="c-n"||t.id==="c-w"){cot.nombre=document.getElementById("c-n").value;cot.wa=document.getElementById("c-w").value;document.getElementById("c-t").value=cotizacion();document.getElementById("c-go").href=waLink(cot.wa,cotizacion());}
+});
+function syncMsg(){var g=function(i){var x=document.getElementById(i);return x?x.value:null;};
+  if(g("m-n")!==null){msg.nombre=g("m-n");msg.wa=g("m-w");msg.rubro=g("m-r");msg.zona=g("m-z");msg.texto=g("m-t");}}
+function fillMsg(){var p=S.prospects.find(function(x){return x.id===msg.pid;}); if(p){msg.nombre=p.nombre;msg.rubro=p.rubro;msg.zona=p.zona;msg.wa=p.wa;} msg.texto=plantilla(msg.tipo,msg.nombre,msg.zona,msg.rubro);}
+document.getElementById("sheet").addEventListener("click",function(e){if(e.target.id==="sheet")closeSheet();});
+
+fillMsg(); render();
+})();
+</script>
+
+</body></html>
