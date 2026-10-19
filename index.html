@@ -1,4 +1,3 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>ESSTRADA Web 24 Horas</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
@@ -61,6 +60,10 @@ input[aria-invalid="true"]{border-color:var(--bad)}
 .note{font-size:13px;color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:99px;font-size:13px;font-weight:600;z-index:30}
 footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.pk .bn{display:block;margin-top:6px;font-size:12px;font-weight:700;color:var(--green)}
+.bono{background:var(--surface2);border:2px dashed var(--green);border-radius:16px;padding:16px}
+.bono .tag{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;background:var(--sun);color:var(--sun-ink);border-radius:99px;padding:2px 12px;margin-bottom:8px}
+.bono .cta{margin-top:12px;width:100%;justify-content:center}
 @media (max-width:380px){.grid2{grid-template-columns:1fr}}
 </style>
 
@@ -86,9 +89,21 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
     <h2>Elija su paquete</h2>
     <p class="note" style="margin:0 0 12px">Se paga la mitad como adelanto y el resto al recibir su página.</p>
     <div class="grid2">
-      <button type="button" class="pk" data-p="express" aria-pressed="true"><span class="n">Express</span><b>S/150</b><span class="d">Página + botón de WhatsApp</span><span class="a">Adelanto S/75</span></button>
-      <button type="button" class="pk" data-p="pro" aria-pressed="false"><span class="n">Pro</span><b>S/250</b><span class="d">Página + chatbot de preguntas frecuentes</span><span class="a">Adelanto S/125</span></button>
+      <button type="button" class="pk" data-p="express" aria-pressed="true"><span class="n">Express</span><b>S/150</b><span class="d">Página + botón de WhatsApp</span><span class="a">Adelanto S/75</span><span class="bn">+ Bono: tablero de cobranzas, 30 días gratis</span></button>
+      <button type="button" class="pk" data-p="pro" aria-pressed="false"><span class="n">Pro</span><b>S/250</b><span class="d">Página + chatbot de preguntas frecuentes</span><span class="a">Adelanto S/125</span><span class="bn">+ Bono: tablero de cobranzas, 60 días gratis</span></button>
     </div>
+  </section>
+
+  <section class="bono" id="bono">
+    <span class="tag">Bono incluido</span>
+    <h2>Tablero para cobrar a sus deudores</h2>
+    <p class="note" style="margin:0 0 10px">¿Le deben plata sus clientes? Anótelos en su tablero y cóbreles por WhatsApp con un toque, sin pasar vergüenza.</p>
+    <ul class="list">
+      <li><span class="tick">✓</span><div><b>Mensaje de cobro ya redactado</b><span class="t">Amable al inicio, más firme si pasan los días de atraso. Usted puede editarlo antes de enviar.</span></div></li>
+      <li><span class="tick">✓</span><div><b>Sepa cuánto le deben y cuánto recuperó</b><span class="t">Por cobrar, vencido y recuperado, todo en una sola pantalla del celular.</span></div></li>
+    </ul>
+    <p class="note" style="margin:10px 0 0">Gratis 30 días con Express y 60 días con Pro. Después, S/29 al mes. Sin contrato: lo deja cuando quiera.</p>
+    <a class="cta" href="https://cobranzas-pe.netlify.app" target="_blank" rel="noreferrer">Ver el tablero de cobranzas</a>
   </section>
 
   <section class="card">
@@ -146,6 +161,7 @@ function msg(){
     "Rubro: "+$("f-r").value,
     "Zona: "+$("f-z").value,
     "Mi WhatsApp: "+$("f-w").value.trim(),
+    "Incluye bono: tablero de cobranzas ("+(paq==="pro"?60:30)+" días gratis).",
     "Voy a pagar el adelanto de S/"+ad+" por QR y le envío la captura."].join("\n");
 }
 function link(){return "https://wa.me/"+WA+"?text="+encodeURIComponent(msg());}
@@ -179,5 +195,3 @@ $("cp").addEventListener("click",function(){
 refresh();
 })();
 </script>
-
-</body></html>
